@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 Route::get('/', [UserController::class, "showCorrecthomepage"])->name('login');
 Route::post('/register', [UserController::class, 'register'])->middleware('guest');
 Route::post('/login', [UserController::class, 'login'])->middleware('guest');
-Route::post('/logout', [UserController::class, 'logout'])->middleware('MustBeLogingit');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('MustBeLogin');
 
 // Blog Related Routes
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('MustBeLogin');
