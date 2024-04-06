@@ -8,6 +8,32 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function showCorrectHomepage()
+    {
+        auth()->check();
+
+        if (auth()->check()) {
+            return view('homepage-feed');
+        } else {
+            return view('homepage');
+        }
+
+    }
+    public function login(Request $request)
+    {
+        $incomingFields = $request->validate([
+            'loginusername' => 'required',
+            'loginpassword' => 'required',
+        ]);
+
+        if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
+            $request->session()->regenerate();
+            return 'Berhasil';
+        } else {
+            return 'Gagal';
+        }
+    }
+
     public function register(Request $request)
     {
         $incomingFields = $request->validate([
@@ -20,3 +46,5 @@ class UserController extends Controller
         return 'Hello From Register';
     }
 }
+
+
