@@ -8,6 +8,12 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function logout()
+    {
+        auth()->logout();
+        return redirect('/')->with('success', 'Berhasil Logout!');
+    }
+
     public function showCorrectHomepage()
     {
         auth()->check();
@@ -28,9 +34,9 @@ class UserController extends Controller
 
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
-            return 'Berhasil';
+            return redirect('/')->with('success', 'Berhasil Login!');
         } else {
-            return 'Gagal';
+            return redirect('/')->with('failure', 'Invalid Login');
         }
     }
 
@@ -42,8 +48,9 @@ class UserController extends Controller
             'password' => ['required', 'min:8', 'confirmed']
         ]);
         $incomingFields['password'] = bcrypt($request->password);
-        User::create($incomingFields);
-        return 'Hello From Register';
+        $user = User::create($incomingFields);
+        auth()->login($user);
+        return redirect('/')->with('success', 'Thank you for creating account!');
     }
 }
 
