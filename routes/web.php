@@ -1,8 +1,15 @@
 <?php
 
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+
+
+Route::get("/admin", function () {
+    return 'admin only coy';
+})->middleware('can:visitAdminPages');
+
 
 // User Related Routes
 Route::get('/', [UserController::class, "showCorrecthomepage"])->name('login');
